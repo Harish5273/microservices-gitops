@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: microservices-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    # AWS CodeCommit Git Repository URL
+    repoURL: 'https://git-codecommit.us-east-1.amazonaws.com/v1/repos/microservices-gitops'
+    targetRevision: main
+    path: k8s
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: microservices
+  syncPolicy:
+    automated:
+      prune: true      # Automatically delete resources removed from Git
+      selfHeal: true   # Automatically reconcile manual changes / drift
+    syncOptions:
+      - CreateNamespace=true
