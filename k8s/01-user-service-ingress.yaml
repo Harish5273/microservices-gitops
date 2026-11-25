@@ -4,6 +4,7 @@ metadata:
   name: user-service-ingress
   namespace: microservices
 spec:
+  ingressClassName: traefik
   rules:
   - http:
       paths:
